@@ -1,16 +1,22 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateActionDto } from 'src/dtos/CreateActionDto';
 import Game from 'src/models/Game';
-import { PlayerService } from './player.service';
 import GameAction from 'src/models/GameAction';
 import GameStatus from 'src/models/GameStatus';
-import { CreateActionDto } from 'src/dtos/CreateActionDto';
 import GetTime from 'src/models/GetTime';
+import { PlayerService } from './player.service';
 
 @Controller('player')
 @ApiTags('player')
 export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
+
+  @Get('games')
+  @ApiResponse({ status: 200, type: Game, isArray: true })
+  async getAll(): Promise<Game[]> {
+    return await this.playerService.getAllGames();
+  }
 
   @Get('games/:id')
   @ApiParam({ name: 'id', type: String })

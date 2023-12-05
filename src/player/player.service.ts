@@ -155,6 +155,11 @@ export class PlayerService {
     ];
     this.actions = [];
   }
+
+  async getAllGames(): Promise<Game[]> {
+    return this.games;
+  }
+
   async getById(id: number): Promise<Game> {
     const game = this.games.find((game) => game.id === id);
     if (!game) {
