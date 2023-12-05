@@ -5,6 +5,7 @@ import { PlayerService } from './player.service';
 import GameAction from 'src/models/GameAction';
 import GameStatus from 'src/models/GameStatus';
 import { CreateActionDto } from 'src/dtos/CreateActionDto';
+import GetTime from 'src/models/GetTime';
 
 @Controller('player')
 @ApiTags('player')
@@ -41,5 +42,11 @@ export class PlayerController {
     @Body() body: CreateActionDto,
   ): Promise<GameStatus> {
     return await this.playerService.createGameAction(+id, body);
+  }
+
+  @Get('time')
+  @ApiResponse({ status: 200, type: GetTime })
+  async getTime(): Promise<GetTime> {
+    return this.playerService.getTime();
   }
 }

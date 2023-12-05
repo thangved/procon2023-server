@@ -3,6 +3,7 @@ import { CreateActionDto } from 'src/dtos/CreateActionDto';
 import Game from 'src/models/Game';
 import GameAction from 'src/models/GameAction';
 import GameStatus from 'src/models/GameStatus';
+import GetTime from 'src/models/GetTime';
 
 @Injectable()
 export class PlayerService {
@@ -218,5 +219,11 @@ export class PlayerService {
     });
 
     return await this.getGameStatus(gameId);
+  }
+
+  getTime(): GetTime {
+    return {
+      time: new Date().toISOString(),
+    };
   }
 }
