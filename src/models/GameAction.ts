@@ -1,23 +1,32 @@
 import { ApiProperty } from '@nestjs/swagger';
 import Action from './Action';
-import BaseModel from './BaseModel';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
+import Game from './Game';
 
-export default class GameAction extends BaseModel {
+@Entity()
+export default class GameAction {
+  @PrimaryGeneratedColumn()
   @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  @Column()
   turn: number;
 
   @ApiProperty()
+  @Column()
   team_id: number;
 
   @ApiProperty()
-  game_id: number;
-
-  @ApiProperty()
-  created_time: Date | string;
-
-  @ApiProperty()
+  @OneToMany(() => Action, (action) => action.game_action, { eager: true })
   actions: Action[];
 
-  @ApiProperty()
-  disabled?: boolean;
+  @ManyToOne(() => Game, (game) => game.actions)
+  game: Game;
 }

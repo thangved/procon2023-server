@@ -1,32 +1,49 @@
 import { ApiProperty } from '@nestjs/swagger';
-import BaseModel from './BaseModel';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import Game from './Game';
 
-export default class Field extends BaseModel {
+@Entity()
+export default class Field {
+  @PrimaryGeneratedColumn()
   @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  @Column()
   name: string;
 
   @ApiProperty({ minimum: 1 })
+  @Column()
   castle_coeff: number;
 
   @ApiProperty({ minimum: 1 })
+  @Column()
   wall_coeff: number;
 
   @ApiProperty({ minimum: 1 })
+  @Column()
   territory_coeff: number;
 
   @ApiProperty({ minimum: 1 })
+  @Column()
   width: number;
 
   @ApiProperty({ minimum: 1 })
+  @Column()
   height: number;
 
   @ApiProperty()
+  @Column()
   ponds: string;
 
   @ApiProperty()
+  @Column()
   castles: string;
+
   @ApiProperty()
+  @Column()
   craftsmen: string;
-  @ApiProperty()
-  match_id: number;
+
+  @OneToMany(() => Game, (game) => game.field)
+  games: Game[];
 }

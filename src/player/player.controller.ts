@@ -8,7 +8,7 @@ import GetTime from 'src/models/GetTime';
 import { PlayerService } from './player.service';
 
 @Controller('player')
-@ApiTags('player')
+@ApiTags('Player')
 export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
 
@@ -48,6 +48,12 @@ export class PlayerController {
     @Body() body: CreateActionDto,
   ): Promise<GameStatus> {
     return await this.playerService.createGameAction(+id, body);
+  }
+
+  @Post('games/random')
+  @ApiResponse({ status: 201, type: Game })
+  async createRandomGame(): Promise<Game> {
+    return await this.playerService.randomGame();
   }
 
   @Get('time')

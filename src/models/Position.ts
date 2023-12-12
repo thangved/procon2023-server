@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export default class Position {
   @ApiProperty()
   x: number;
+
   @ApiProperty()
   y: number;
 }

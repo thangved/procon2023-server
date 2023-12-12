@@ -1,40 +1,38 @@
 import { ApiProperty } from '@nestjs/swagger';
-import BaseModel from './BaseModel';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import GameAction from './GameAction';
 
-export default class Action extends BaseModel {
-  @ApiProperty({ enum: ['STAY', 'MOVE', 'BUILD', 'DESTROY'] })
-  action: 'STAY' | 'MOVE' | 'BUILD' | 'DESTROY';
+export type ActionTypes = 'STAY' | 'MOVE' | 'BUILD' | 'DESTROY';
+export type ActionParams =
+  | 'UP'
+  | 'DOWN'
+  | 'LEFT'
+  | 'RIGHT'
+  | 'ABOVE'
+  | 'BELOW'
+  | 'UP_LEFT'
+  | 'UP_RIGHT'
+  | 'DOWN_LEFT'
+  | 'DOWN_RIGHT';
 
-  @ApiProperty({
-    enum: [
-      'UP',
-      'DOWN',
-      'LEFT',
-      'RIGHT',
-      'ABOVE',
-      'BELOW',
-      'UP_LEFT',
-      'UP_RIGHT',
-      'DOWN_LEFT',
-      'DOWN_RIGHT',
-    ],
-  })
-  action_param?:
-    | 'UP'
-    | 'DOWN'
-    | 'LEFT'
-    | 'RIGHT'
-    | 'ABOVE'
-    | 'BELOW'
-    | 'UP_LEFT'
-    | 'UP_RIGHT'
-    | 'DOWN_LEFT'
-    | 'DOWN_RIGHT';
-  craftsman_id: string;
+@Entity()
+export default class Action {
+  @PrimaryGeneratedColumn()
+  @ApiProperty()
+  id: number;
 
   @ApiProperty()
-  action_id: number;
+  @Column()
+  action: ActionTypes;
 
-  @ApiProperty({ required: false })
-  disabled?: boolean;
+  @ApiProperty()
+  @Column()
+  action_param?: ActionParams;
+
+  @ApiProperty({ uniqueItems: true })
+  @Column()
+  craftsman_id: string;
+
+  @ManyToOne(() => GameAction, (game_action) => game_action.actions)
+  game_action: GameAction;
 }
