@@ -189,9 +189,9 @@ export class PlayerService {
     }
 
     const max_turn = game.num_of_turns;
-    const remaining = Math.round(
-      ((now - start) % (game.time_per_turn * 1000)) / 1000,
-    );
+    const remaining =
+      Math.round(((now - start) % (game.time_per_turn * 1000)) / 1000) ||
+      game.time_per_turn;
 
     return {
       cur_turn,
