@@ -23,3 +23,21 @@ Di chuyển vào thư mục dự án
 ```sh
 cd procon2023-server
 ```
+
+Cài đặt các thư viện cần thiết
+
+```sh
+npm i
+```
+
+Chạy server
+
+```sh
+npm run start
+```
+
+Mặc định, server sẽ chạy lên ở địa chỉ http://localhost:3000
+
+### Các API
+
+Xem các API tại http://localhost:3000/api-docs
