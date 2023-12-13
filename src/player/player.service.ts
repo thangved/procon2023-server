@@ -29,8 +29,9 @@ export class PlayerService {
     return this.gameRepository.find();
   }
 
-  async getById(id: number): Promise<Game> {
-    const game = this.gameRepository.findOne({ where: { id } });
+  async getGameById(id: number): Promise<Game> {
+    const game = await this.gameRepository.findOne({ where: { id } });
+
     if (!game) {
       throw new NotFoundException('Game not found');
     }
@@ -38,13 +39,13 @@ export class PlayerService {
   }
 
   async getActionsByGameId(gameId: number): Promise<GameAction[]> {
-    const game = await this.getById(gameId);
+    const game = await this.getGameById(gameId);
 
     return game.actions;
   }
 
   async getGameStatus(gameId: number): Promise<GameStatus> {
-    const game = await this.getById(gameId);
+    const game = await this.getGameById(gameId);
     const now = new Date().getTime();
     const start = new Date(game.start_time).getTime();
 
@@ -76,7 +77,7 @@ export class PlayerService {
     body: CreateActionDto,
   ): Promise<GameStatus> {
     const status = await this.getGameStatus(gameId);
-    const game = await this.getById(gameId);
+    const game = await this.getGameById(gameId);
 
     if (status.cur_turn >= body.turn) {
       throw new HttpException('Invalid turn', 400);

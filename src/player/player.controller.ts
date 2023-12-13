@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateActionDto } from 'src/dtos/CreateActionDto';
 import Game from 'src/models/Game';
@@ -21,13 +21,15 @@ export class PlayerController {
   @Get('games/:id')
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200, type: Game })
-  async getById(@Param('id') id: string): Promise<Game> {
-    return await this.playerService.getById(+id);
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Game not found' })
+  async getGameById(@Param('id') id: string): Promise<Game> {
+    return await this.playerService.getGameById(+id);
   }
 
   @Get('games/:id/actions')
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200, type: GameAction, isArray: true })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Game not found' })
   async getActionsByGameId(@Param('id') id: string): Promise<GameAction[]> {
     return await this.playerService.getActionsByGameId(+id);
   }
@@ -35,6 +37,11 @@ export class PlayerController {
   @Get('games/:id/status')
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200, type: GameStatus })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Game not found' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Game has ended',
+  })
   async getGameStatusById(@Param('id') id: string): Promise<GameStatus> {
     return this.playerService.getGameStatus(+id);
   }
@@ -43,6 +50,7 @@ export class PlayerController {
   @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: CreateActionDto })
   @ApiResponse({ status: 200, type: GameStatus })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Game not found' })
   async createGameAction(
     @Param('id') id: string,
     @Body() body: CreateActionDto,
