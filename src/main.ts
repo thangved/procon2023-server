@@ -11,7 +11,7 @@ async function bootstrap() {
     .setTitle('Procon API')
     .setDescription('Procon API description')
     .setVersion('1.0')
-    .addServer('http://localhost:3000/api')
+    .addServer('/api')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
